@@ -75,9 +75,11 @@ A context-aware AI chatbot platform built for isolated chat instances, dynamic m
 
 - Python 3.12+
 - Ollama running locally with the following models pulled:
-  - `qwen3:30b`
-  - `gemma3:12b`
-  - `nomic-embed-text:latest`
+  - `qwen3:30b` (intelligent agent logic)
+  - `gemma3:12b` (base chatbot model)
+  - `llama3:7b` (quick, for simple backend tasks)
+  - `mistral-nemo:12b` (fast, used in summarizing for memory recall)
+  - `nomic-embed-text:latest` (embedding model)
 - MSSQL database accessible via ODBC Driver 18
 - ChromaDB (installed via pip)
 
@@ -118,7 +120,7 @@ python vanna_server.py
 python -m http.server 8001
 ```
 
-Access the chatbot at: [http://localhost:8001/QA_Chatbot/components/chat.html](http://localhost:8001/QA_Chatbot/components/chat.html)
+Access the chatbot at: [http://localhost:8001/LLM-Chatbot/components/chat.html](http://localhost:8001/LLM-Chatbot/components/chat.html)
 
 You can also access the Vanna agent testing UI directly at: [http://localhost:8000/](http://localhost:8000/)
 
@@ -166,7 +168,6 @@ for col in df.columns:
 
 ## Configuration Notes
 
-- Database connection strings and Ollama host URLs are currently hardcoded in `vanna_server.py` and `web_search.py`. Move these to a `.env` file for any shared or production deployment.
 - SQL guardrails in `vanna_server.py` are intentionally conservative. Once expected query patterns are known, refine the guard logic accordingly.
 - The Vanna agent tool registry has `VisualizeDataTool` and memory tools commented out. Uncomment and register them as needed for your use case.
 
