@@ -36,19 +36,35 @@ A context-aware AI chatbot platform built for isolated chat instances, dynamic m
 
 ```
 /
-├── vanna_server.py              # Vanna FastAPI server and agent setup
-├── semantic_schema_enhancer.py  # Semantic schema selection for SQL prompts
-├── column_semantics.py          # Human-written column descriptions for all tables
-├── create_schema_embeddings.py  # One-time script to generate schema_embeddings.json
-├── schema_embeddings.json       # Precomputed table/column embeddings (auto-generated)
-├── managed_disk_file_system.py  # WIP/finished query file lifecycle manager
-├── web_search.py                # Web search + RAG pipeline tool
-├── proof_of_concept.py          # CLI test client for the Vanna agent
-├── wip_queries/                 # Temporary storage for in-progress query artifacts
-├── finished_queries/            # Completed query artifacts
-└── QA_Chatbot/
-    └── components/
-        └── chat.html            # Chatbot frontend
+├── .env.example
+├── requirements.txt
+│
+├── backend/
+│   ├── server.py                   # FastAPI entry point
+│   ├── server_runner.py
+│   ├── chromadb_client.py
+│   ├── sql_connection.py
+│   │
+│   ├── llm_agent/                  # Agent loop, tools, and validation
+│   │   └── agent_tools/
+│   │       ├── web_search.py       # Web search + RAG pipeline
+│   │       └── vanna_txt2sql/      # Text-to-SQL via Vanna
+│   │
+│   ├── routes/                     # API route handlers
+│   └── services/                   # Business logic layer
+│
+├── components/
+│   └── chat.html                   # Chatbot frontend
+│
+├── css/
+│   └── style.css
+│
+├── js/
+│   └── chat.js
+│
+├── diagrams/                       # Architecture and flow diagrams
+├── notes/                          # Dev notes and prompt drafts
+└── sql_queries_quick_access/       # Utility SQL scripts
 ```
 
 ---
