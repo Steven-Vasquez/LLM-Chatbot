@@ -1,0 +1,39 @@
+---
+config:
+  themeVariables:
+    fontSize: 18px
+  layout: dagre
+---
+flowchart TB
+    User(["User sends message"]) --> Store["Store message"]
+    Store --> Summary["Update/Finalize Context Summary"] & SQL["SQL DB"] & Vector["Vector DB"]
+    Summary --> BuildPrompt["Build LLM Prompt"]
+    BuildPrompt --> AgentLoop(["Start LLM Agent Loop"])
+    AgentLoop --> Decide{"Tool call?"}
+    DBTool["Vanna SQL Tool"] --> ToolResult["Append tool result to messages"]
+    WebTool["Web RAG Tool"] --> ToolResult
+    ToolResult --> AgentLoop
+    Decide -- No tool call --> FinalLLM["Final LLM assistant reply"]
+    FinalLLM --> Store
+    Decide -- database_query --> DBTool
+    Decide -- web_search --> WebTool
+
+    Store@{ shape: rounded}
+    SQL@{ shape: cyl}
+    Vector@{ shape: cyl}
+     User:::all
+     Store:::database
+     Summary:::llm
+     SQL:::database
+     Vector:::database
+     BuildPrompt:::llm
+     AgentLoop:::agent
+     Decide:::agent
+     DBTool:::agent
+     ToolResult:::agent
+     WebTool:::agent
+     FinalLLM:::llm
+    classDef all fill:none,stroke:#333,stroke-width:2px,color:#000,font-size:20px
+    classDef database fill:#EEFFDD,stroke:#333,stroke-width:2px,color:#000,font-size:20px
+    classDef llm fill:#FFDDDD,stroke:#333,stroke-width:2px,color:#000,font-size:20px
+    classDef agent fill:#FFF2CC,stroke:#333,stroke-width:2px,color:#000,font-size:20px

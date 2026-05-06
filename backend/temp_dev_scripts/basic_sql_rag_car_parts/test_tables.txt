@@ -1,0 +1,28 @@
+CREATE TABLE vehicles (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    make NVARCHAR(50),
+    model NVARCHAR(50),
+    year INT,
+    trim NVARCHAR(50),
+    engine NVARCHAR(50)
+);
+
+CREATE TABLE parts (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    part_number NVARCHAR(50),
+    name NVARCHAR(100),
+    category NVARCHAR(50)
+);
+
+CREATE TABLE part_fitment (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    part_id INT,
+    make NVARCHAR(50),
+    model NVARCHAR(50),
+    year_start INT,
+    year_end INT,
+    trim NVARCHAR(50),
+    engine NVARCHAR(50),
+    notes NVARCHAR(255),
+    FOREIGN KEY (part_id) REFERENCES parts(id)
+);

@@ -1,0 +1,43 @@
+flowchart TD
+    A([Client sends query]) --> B
+
+    B["**FastAPI** /custom_agent_query
+    vanna_server.py · cleanup_finished()"]
+
+    B --> C["**Resolve user identity**
+    SimpleUserResolver → User + group"]
+
+    C --> D
+
+    subgraph D["SemanticSchemaEnhancer"]
+        D1["**Embed user query**
+        Ollama nomic-embed-text"] --> D2["**Score all tables**
+        Cosine sim: table + top-K cols"]
+        D2 --> D3["**Select top-N tables**
+        Rank by score, pick top_n=5"]
+        D3 --> D4["**Build enhanced prompt**
+        Schema + relationship map"]
+    end
+
+    D --> E["**Vanna Agent** (Qwen3:30b)
+    LLM reasons, plans tool calls"]
+
+    E --> F["**ChromaDB memory lookup**
+    Retrieve relevant past queries"]
+
+    F --> G
+
+    subgraph G["RunSqlTool"]
+        G1["**SQL guard** (engine event)
+        Block unsafe, add TOP 1000"] --> G2["**MSSQLRunner executes SQL**
+        Returns DataFrame via pandas"]
+        G2 --> G3["**DataFrame result returned**
+        Back to agent for synthesis"]
+        G2 --> G4["**Write to wip_queries/**
+        ManagedDiskFileSystem"]
+    end
+
+    G --> H["**Agent synthesizes response**
+    Up to 25 tool iterations"]
+
+    H --> I([Finalize · return JSON])

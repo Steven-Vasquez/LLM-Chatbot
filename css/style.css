@@ -1,0 +1,422 @@
+/* Debug header row flex container */
+.debug-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+  padding: 0.9rem 1rem;
+}
+
+/* Dark styled button for debug clear */
+.dark-btn {
+  background: #1e293b;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 1rem;
+}
+.dark-btn:hover {
+  background: #334155;
+  color: #fff;
+}
+
+/* Basic layout */
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #f7f8fa;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.chat-layout {
+  display: flex;
+  width: 100%;
+  max-width: 100vw;
+  height: 100vh;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Sidebar */
+#sidebar {
+  width: 15%;
+  background-color: #f1f3f5;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto;
+}
+
+#sidebar h3 {
+  margin: 1rem;
+  font-size: 1.1rem;
+  color: #111;
+}
+
+#chat-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1rem;
+}
+
+#chat-list div {
+  background: #fff;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#chat-list div:hover {
+  background: #e8f0fe;
+  border-color: #c3dafc;
+}
+
+#chat-list div.active {
+  background: rgb(121, 166, 250); /* highlighted color */
+  /*font-weight: bold;*/
+}
+
+
+
+#new-chat-btn {
+  margin: 1rem;
+  padding: 0.5rem 0;
+  background: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+#new-chat-btn:hover {
+  background: #005fcc;
+}
+
+/* Chat container */
+.chat-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  width: 45%;
+}
+
+.chat-container h2 {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 1.1rem;
+  color: #333;
+  background: #fff;
+}
+
+/* Chat messages */
+#chat-box {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.message {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  width: 95%;
+  line-height: 1.4;
+}
+
+.message.user {
+  background-color: #007aff;
+  color: #fff;
+  align-self: flex-end;
+}
+
+.message.bot {
+  background-color: #e6e8eb;
+  color: #111;
+  align-self: flex-start;
+}
+
+/* Chat input */
+#chat-form {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 0.75rem;
+  background: #fff;
+}
+
+#message {
+  flex: 1;
+  padding: 0rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+}
+
+#message:focus {
+  border-color: #007aff;
+}
+
+#chat-form button {
+  background: #007aff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  margin-left: 0.75rem;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#chat-form button:hover {
+  background: #005fcc;
+}
+
+/* Scrollbar styling */
+#sidebar::-webkit-scrollbar,
+#chat-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+#sidebar::-webkit-scrollbar-thumb,
+#chat-box::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.chat-controls {
+  padding: 0.5rem 1rem;
+  background: #fff;
+  border-top: 1px solid #eee;
+}
+
+/* MODE SWITCH */
+.mode-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.mode-label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.mode-switch {
+  display: flex;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.mode-option {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.2s ease;
+}
+
+.mode-option.active {
+  background: #fff;
+  color: #007aff;
+  box-shadow: 0 0 0 1px rgba(0,122,255,0.15);
+}
+
+
+/* TOOL CHIPS */
+.tool-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tool-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background: #f6f7f9;
+  color: #444;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+}
+
+.tool-chip:hover {
+  background: #eceff3;
+}
+
+.tool-chip.active {
+  background: rgba(0,122,255,0.08);
+  border: 1px solid rgba(0,122,255,0.3);
+  color: #007aff;
+}
+
+.tool-chip .icon {
+  font-size: 0.85rem;
+}
+
+
+/* =========================
+   DEBUG PANEL LAYOUT
+========================= */
+
+.debug-output {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid #e5e7eb;
+  background: #0f172a;          /* dark console background */
+  color: #e5e7eb;
+  overflow-wrap: normal;
+}
+
+/* Debug header */
+.debug-output h3 {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  background: #111827;
+  border-bottom: 1px solid #1f2937;
+  color: #94a3b8;
+}
+
+/* Scrollable debug content */
+#debug-content {
+  flex: 1;
+  overflow-y: auto;
+  padding-top: 0.75rem;
+  padding-bottom: .75rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+/* Individual debug lines */
+.debug-line {
+  padding: 4px 6px;
+  margin-bottom: 3px;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  opacity: 0.95;
+}
+
+.collapsible-json {
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-width: 100%;
+  overflow-x: auto;
+  padding-left: 1rem;
+  margin: 0;
+}
+
+/* Subtle hover highlight */
+.debug-line:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Scrollbar styling */
+#debug-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+#debug-content::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+/* =========================
+   DEBUG TYPE COLORS
+========================= */
+
+.debug-websocket {
+  color: #94a3b8;
+}
+
+.debug-iteration {
+  color: #94a3b8;
+  font-weight: 600;
+  padding-top: 25px;
+}
+
+.debug-system {
+  color: #94a3b8;
+}
+
+.debug-system-msg {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.debug-tool-processing {
+  color: #38bdf8;
+  font-style: italic;
+}
+
+.debug-llm {
+  color: #fbbf24;
+}
+
+.debug-llm-thinking {
+  color: #fbbf24;
+  font-style: italic;
+}
+
+.debug-tool-call {
+  color: #60a5fa;
+}
+
+.debug-tool-result {
+  color: #34d399;
+}
+
+.debug-final {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.debug-error {
+  color: #f87171;
+  font-weight: 600;
+}
+
+.debug-toggle {
+  background: #1e293b;
+  color: #94a3b8;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  font-size: 11px;
+}

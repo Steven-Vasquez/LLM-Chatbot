@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+
+/venv/
+.env
+
+chroma_db/
+
+# Queried data results from Vanna's tools that will be cleaned up periodically.
+finished_queries/
+wip_queries/

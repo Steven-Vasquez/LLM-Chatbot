@@ -1,0 +1,53 @@
+---
+config:
+  layout: dagre
+---
+flowchart TB
+    User["User sends message"] --> API["Backend API receives message"]
+    API --> SQL["Save user message to SQL DB"]
+    SQL --> Vector["Embed message and save to ChromaDB"]
+    Vector --> Drift["Detect topic drift"]
+    Drift --> Summary["Update or finalize context summary"]
+    Summary -- Roll topic --> Roll["Incrementally update current topic summary via LLM"]
+    Roll --> SQLSummary["Update current_context_summary in SQL"]
+    Summary -- Finalize topic --> Finalize["Summarize chat window via LLM"]
+    Finalize --> ContextVec["Store context summary in ChromaDB"]
+    ContextVec --> Reset["Reset current context summary via LLM"]
+    Reset --> SQLSummary
+    SQLSummary --> BuildPrompt["prompt_builder:<br>Retrieve relevant conversation context<br>Assemble initial message list"]
+    BuildPrompt --> AgentLoop["Start LLM Agent Loop<br>(messages include memory + summaries + recent chat)"]
+    AgentLoop --> Decide{"Tool call?"}
+    Decide -- database_query --> DBTool["Vanna SQL Tool"]
+    Decide -- web_search --> WebTool["Web / Knowledge RAG Tool"]
+    DBTool --> ToolResult["Append tool result to messages"]
+    WebTool --> ToolResult
+    ToolResult --> AgentLoop
+    Decide -- No tool call --> FinalLLM["Final LLM assistant reply"]
+    FinalLLM --> SaveAI["Save AI response to SQL DB"]
+    SaveAI --> User
+
+     User:::all
+     API:::all
+     SQL:::sql
+     Vector:::vector
+     Drift:::all
+     Summary:::all
+     Roll:::llm
+     SQLSummary:::sql
+     Finalize:::llm
+     ContextVec:::vector
+     Reset:::all
+     BuildPrompt:::memory
+     AgentLoop:::agent
+     Decide:::agent
+     DBTool:::agent
+     WebTool:::agent
+     ToolResult:::agent
+     FinalLLM:::llm
+     SaveAI:::sql
+    classDef all fill:none,stroke:#333,stroke-width:1px,color:#000,font-size:12px
+    classDef sql fill:#EEFFDD,stroke:#333,stroke-width:1px,color:#000,font-size:12px
+    classDef vector fill:#D0E0FF,stroke:#333,stroke-width:1px,color:#000,font-size:12px
+    classDef llm fill:#FFDDDD,stroke:#333,stroke-width:1px,color:#000,font-size:12px
+    classDef agent fill:#FFF2CC,stroke:#333,stroke-width:1px,color:#000,font-size:12px
+    classDef memory fill:#E6E6FA,stroke:#333,stroke-width:1px,color:#000,font-size:12px

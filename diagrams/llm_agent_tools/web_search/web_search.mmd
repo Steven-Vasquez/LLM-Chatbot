@@ -1,0 +1,56 @@
+---
+config:
+  layout: dagre
+---
+flowchart TD
+    A([Client calls web_search query]) --> B
+
+    B["**DuckDuckGo search**
+    POST html.duckduckgo.com/html/
+    Returns up to 8 URLs"]
+
+    B --> C["**Slice URLs**
+    Keep top MAX_PAGES_TO_FETCH = 5"]
+
+    C --> D
+
+    subgraph D["Page Fetching Loop"]
+        D1["**GET page HTML**
+        requests + BeautifulSoup"] --> D2["**Strip noise tags**
+        script, style, nav, footer..."]
+        D2 --> D3["**Extract plain text**
+        Collapse whitespace → WebDocument"]
+    end
+
+    D --> E["**Chunk documents**
+    size=600, overlap=150 → Chunk list
+    Each chunk tagged source_id + URL"]
+
+    E --> F
+
+    subgraph F["Embedding-Based Ranking"]
+        F1["**Embed query**
+        Ollama nomic-embed-text"] --> F2["**Embed all chunks**
+        Ollama nomic-embed-text"]
+        F2 --> F3["**Cosine similarity**
+        sklearn · rank all chunks"]
+        F3 --> F4["**Select top-K chunks**
+        top_k=6, max 2 per source"]
+    end
+
+    F --> G["**Build RAG context**
+    Format chunks as S1…Sn with URLs"]
+
+    G --> H["**Build final prompt**
+    Question + RAG context + sources list"]
+
+    H --> I["**Ollama LLM generate**
+    Model: gemma3:12b · streaming"]
+
+    I --> J["**Collect streamed response**
+    Parse NDJSON lines → full_text"]
+
+    J --> K["**Emit debug log**
+    ToolProcessingEvent if debug_emit set"]
+
+    K --> L([Return answer string])

@@ -1,0 +1,55 @@
+---
+config:
+  layout: elk
+  themeVariables:
+    fontSize: 20px
+---
+flowchart LR
+ subgraph SQL_DB[<b>SQL Database</b>]
+        Recent["Recent messages"]
+        Topic["Current topic summary"]
+  end
+ subgraph Vector_DB[<b>ChromaDB Vector Stores</b>]
+        MsgVec["Past messages"]
+        SumVec["Completed topic summaries"]
+  end
+ subgraph PromptBuilder[<b>Prompt Builder</b>]
+        Split["Separate latest user input"]
+        Conv["Format recent conversation text"]
+        Retrieve["Semantic retrieval"]
+        Rank["Rank and filter retrieved context"]
+        Retrieved["Retrieved context"]
+        Prompt["Assemble final prompt"]
+        Final["Final prompt string"]
+        System["System prompt"]
+        UserInput["Latest user input"]
+  end
+    Recent --> Split
+    Split --> Conv
+    MsgVec --> Retrieve
+    SumVec --> Retrieve
+    Retrieve --> Rank
+    Rank --> Retrieved
+    Topic --> Prompt
+    Conv --> Prompt
+    Retrieved --> Prompt
+    System --> Prompt
+    UserInput --> Prompt
+    Prompt --> Final
+
+     Recent:::sql_note
+     Topic:::sql_note
+     MsgVec:::vec_note
+     SumVec:::vec_note
+     Split:::pb_note
+     Conv:::pb_note
+     Retrieve:::pb_note
+     Rank:::pb_note
+     Retrieved:::pb_note
+     Prompt:::pb_note
+     Final:::pb_note
+     System:::pb_note
+     UserInput:::pb_note
+    classDef sql_note fill:#DDEEFF,stroke:#333,stroke-width:2px,color:#000,font-size:18px
+    classDef vec_note fill:#EEDDEE,stroke:#333,stroke-width:2px,color:#000,font-size:18px
+    classDef pb_note fill:#EEFFDD,stroke:#333,stroke-width:2px,color:#000,font-size:18px

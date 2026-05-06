@@ -1,0 +1,47 @@
+---
+config:
+  layout: dagre
+  themeVariables:
+    fontSize: 18px
+---
+flowchart TB
+ subgraph D["<span style=font-size:22px>SemanticSchemaEnhancer</span>"]
+        D2["<b>Score all tables</b><br>Cosine sim: table + top-K cols"]
+        D1["<b>Embed user query</b><br>Ollama nomic-embed-text"]
+        D3["<b>Select top-N tables</b><br>Rank by score, pick top_n=5"]
+        D4["<b>Build enhanced prompt</b><br>Schema + relationship map"]
+  end
+ subgraph G["<span style=font-size:22px>RunSqlTool</span>"]
+        G2["<b>MSSQLRunner executes SQL</b><br>Returns DataFrame via pandas"]
+        G1["<b>SQL guard</b> (engine event)<br>Block unsafe, add TOP 1000"]
+        G3["<b>DataFrame returned</b><br>Back to agent for synthesis"]
+        G4["<b>Write results to</b> wip_queries/ ManagedDiskFileSystem"]
+  end
+    D1 --> D2
+    D2 --> D3
+    D3 --> D4
+    C(["Text2SQL Tool Call"]) --> D
+    D --> E["<b>Vanna Agent</b><br>LLM reasons, plans tool calls"]
+    E --> F["<b>ChromaDB lookup</b><br>Retrieve relevant past queries"]
+    F --> G
+    G1 --> G2
+    G2 --> G3 & G4
+    G --> H["<b>Agent synthesizes response</b><br>Up to 25 tool iterations"]
+    H --> I(["Finalize · return JSON"])
+
+     D1:::database
+     D2:::database
+     D3:::database
+     D4:::database
+     E:::llm
+     F:::database
+     G1:::agent
+     G2:::agent
+     G3:::agent
+     G4:::agent
+     H:::llm
+     I:::all
+    classDef all fill:none,stroke:#333,stroke-width:2px,color:#000
+    classDef database fill:#EEFFDD,stroke:#333,stroke-width:2px,color:#000
+    classDef llm fill:#FFDDDD,stroke:#333,stroke-width:2px,color:#000
+    classDef agent fill:#FFF2CC,stroke:#333,stroke-width:2px,color:#000
